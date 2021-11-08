@@ -37,8 +37,12 @@ def get_matrix_from_grid(grid_soup):
 def get_board(page_file):
 	page = bs4.BeautifulSoup(page_file, 'html.parser')
 	grid = find_grid(page)
+	if grid == None:
+		raise Exception("ERROR: Grid not found")
 	if len(grid.contents) == 81:
 		print("Found Grid")
+	else:
+		print("WARNING: 81 element grid not found")
 
 	matrix = get_matrix_from_grid(grid)
 	return matrix
