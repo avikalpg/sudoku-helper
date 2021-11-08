@@ -20,7 +20,7 @@ def get_value_from_cell(soup):
 	if len(soup.contents[0].contents) == 1:
 		return soup.contents[0].text
 	elif len(soup.contents[0].contents) == 9:
-		return ''
+		return ' '
 	else:
 		print("ERROR: Something unexpected occurred")
 
