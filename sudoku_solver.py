@@ -68,6 +68,63 @@ def run_elimination(m: List[List[List[int]]]) -> List[List[List[int]]]:
 	utils.pretty_print_board(convert_matrix_to_board(new_m))
 	return new_m
 
+def apply_confirmations_by_elimination(m: List[List[List[int]]], r: int, c: int) -> List[List[List[int]]]:
+	if len(m[r][c]) == 1:
+		return m
+
+	# apply confirmations in row
+	for e in m[r][c]:
+		found = False
+		for i in range(9):
+			if i == c:
+				continue
+			if e in m[r][i]:
+				found = True
+
+		if found == False:
+			m[r][c] = [e]
+			continue
+
+	# apply confirmations in columns
+	for e in m[r][c]:
+		found = False
+		for i in range(9):
+			if i == r:
+				continue
+			if e in m[i][c]:
+				found = True
+
+		if found == False:
+			m[r][c] = [e]
+			continue
+
+	# apply confirmations in box
+	box_r = r // 3
+	box_c = c // 3
+	for e in m[r][c]:
+		found = False
+		for i in range(3):
+			for j in range(3):
+				br = box_r * 3 + i
+				bc = box_c * 3 + j
+				if br == r and bc == c:
+					continue
+				if e in m[br][bc]:
+					found = True
+
+		if found == False:
+			m[r][c] = [e]
+			continue
+
+	return m
+
+def run_confirmations_by_elimination(m: List[List[List[int]]]) -> List[List[List[int]]]:
+	for r in range(9):
+		for c in range(9):
+			new_m = apply_confirmations_by_elimination(m, r, c)
+	utils.pretty_print_board(convert_matrix_to_board(new_m))
+	return new_m
+
 def get_matrix_stats(m: List[List[List[int]]]) -> int:
 	cells_fixed = 0
 	for row in m:
@@ -81,9 +138,21 @@ def solve(board: List[List[str]]) -> List[List[str]]:
 	matrix = populate_options(board)
 	solution_progress = get_matrix_stats(matrix)
 
+	repeat_count = 0
 	while solution_progress < 81:
 		print ("========================")
+		prev_mat = matrix.copy()
 		matrix = run_elimination(matrix)
 		solution_progress = get_matrix_stats(matrix)
+		matrix = run_confirmations_by_elimination(matrix)
+		solution_progress = get_matrix_stats(matrix)
+
+		if matrix == prev_mat:
+			repeat_count += 1
+			if repeat_count > 3:
+				print("Could not converge")
+				break
+		else:
+			repeat_count = 0
 
 	return convert_matrix_to_board(matrix)
