@@ -1,4 +1,5 @@
-from typing import List
+from SolveState import SolveState
+from typing import List, Tuple
 import utils
 
 def eliminate_options(m: List[List[List[int]]], r: int, c: int) -> List[List[List[int]]]:
@@ -100,26 +101,32 @@ def run_confirmations_by_elimination(m: List[List[List[int]]]) -> List[List[List
 	utils.pretty_print_matrix(new_m)
 	return new_m
 
-def get_matrix_stats(m: List[List[List[int]]]) -> int:
+def get_matrix_stats(m: List[List[List[int]]]) -> Tuple[int, SolveState]:
 	cells_fixed = 0
+	solve_state = SolveState.UNSOLVED
 	for row in m:
 		for cell in row:
 			if len(cell) == 1:
 				cells_fixed += 1
+			elif len(cell) == 0:
+				solve_state = SolveState.UNSOLVABLE
+				break
 	print(str(cells_fixed) + " / " + str(81))
-	return cells_fixed
+	if cells_fixed == 81:
+		solve_state = SolveState.SOLVED
+	return cells_fixed, solve_state
 
-def solve(matrix: List[List[List[int]]]) -> List[List[List[int]]]:
-	solution_progress = get_matrix_stats(matrix)
+def solve(matrix: List[List[List[int]]]) -> Tuple[List[List[List[int]]], SolveState]:
+	solution_progress, solution_state = get_matrix_stats(matrix)
 
 	repeat_count = 0
-	while solution_progress < 81:
+	while solution_progress < 81 and solution_state == SolveState.UNSOLVED:
 		print ("========================")
 		prev_mat = matrix.copy()
 		matrix = run_elimination(matrix)
-		solution_progress = get_matrix_stats(matrix)
+		solution_progress, solution_state = get_matrix_stats(matrix)
 		matrix = run_confirmations_by_elimination(matrix)
-		solution_progress = get_matrix_stats(matrix)
+		solution_progress, solution_state = get_matrix_stats(matrix)
 
 		if matrix == prev_mat:
 			repeat_count += 1
@@ -129,4 +136,4 @@ def solve(matrix: List[List[List[int]]]) -> List[List[List[int]]]:
 		else:
 			repeat_count = 0
 
-	return matrix
+	return matrix, solution_state

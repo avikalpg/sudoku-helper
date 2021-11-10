@@ -11,7 +11,8 @@ def get_sudoku_board(game_url: str):
 
 def orchestrate_solution(board: List[List[str]]) -> List[List[str]]:
 	matrix = utils.populate_options(board)
-	solved_matrix = sudoku_solver.solve(matrix)
+	solved_matrix, solution_state = sudoku_solver.solve(matrix)
+	print(solution_state)
 	return utils.convert_matrix_to_board(solved_matrix)
 
 def main():
