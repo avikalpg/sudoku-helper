@@ -1,6 +1,7 @@
 from SolveState import SolveState
 from typing import List, Tuple
 import utils
+from copy import deepcopy
 
 def eliminate_options(m: List[List[List[int]]], r: int, c: int) -> List[List[List[int]]]:
 	if len(m[r][c]) == 1:
@@ -37,11 +38,12 @@ def eliminate_options(m: List[List[List[int]]], r: int, c: int) -> List[List[Lis
 
 	return m
 
-def run_elimination(m: List[List[List[int]]]) -> List[List[List[int]]]:
+def run_elimination(m: List[List[List[int]]], verbose: bool = False) -> List[List[List[int]]]:
 	for r in range(9):
 		for c in range(9):
 			new_m = eliminate_options(m, r, c)
-	utils.pretty_print_matrix(new_m)
+	if verbose:
+		utils.pretty_print_matrix(new_m)
 	return new_m
 
 def apply_confirmations_by_elimination(m: List[List[List[int]]], r: int, c: int) -> List[List[List[int]]]:
@@ -94,11 +96,12 @@ def apply_confirmations_by_elimination(m: List[List[List[int]]], r: int, c: int)
 
 	return m
 
-def run_confirmations_by_elimination(m: List[List[List[int]]]) -> List[List[List[int]]]:
+def run_confirmations_by_elimination(m: List[List[List[int]]], verbose: bool = False) -> List[List[List[int]]]:
 	for r in range(9):
 		for c in range(9):
 			new_m = apply_confirmations_by_elimination(m, r, c)
-	utils.pretty_print_matrix(new_m)
+	if verbose:
+		utils.pretty_print_matrix(new_m)
 	return new_m
 
 def get_matrix_stats(m: List[List[List[int]]]) -> Tuple[int, SolveState]:
@@ -122,7 +125,7 @@ def solve(matrix: List[List[List[int]]]) -> Tuple[List[List[List[int]]], SolveSt
 	repeat_count = 0
 	while solution_progress < 81 and solution_state == SolveState.UNSOLVED:
 		print ("========================")
-		prev_mat = matrix.copy()
+		prev_mat = deepcopy(matrix)
 		matrix = run_elimination(matrix)
 		solution_progress, solution_state = get_matrix_stats(matrix)
 		matrix = run_confirmations_by_elimination(matrix)
