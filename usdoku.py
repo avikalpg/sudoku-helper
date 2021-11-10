@@ -20,7 +20,10 @@ def main():
 	# game_url = "https://www.usdoku.com/"+game_code+"?source=lobby"
 	# board = get_sudoku_board(game_url)
 
-	with open('demo_html.html', 'r') as f:
+	html_file_name = 'easy_html_0.txt'
+	# html_file_name = 'expert_html_0.txt'
+
+	with open(html_file_name, 'r') as f:
 		demo_html = f.read()
 	board = board_parser.get_board(demo_html)
 	utils.pretty_print_board(board)
