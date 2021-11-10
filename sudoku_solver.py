@@ -9,9 +9,9 @@ class SudokuSolver():
 		self.state = SolveState.UNSOLVED
 		self.seq_steps = list()
 
-	def check_and_add_steps(self, r, c) -> bool:
+	def check_and_add_steps(self, r: int, c: int, reason: str) -> bool:
 		if len(self.m[r][c]) == 1:
-			self.seq_steps.append(((r, c), self.m[r][c][0]))
+			self.seq_steps.append(((r+1, c+1), self.m[r][c][0], reason))
 			return True
 		return False
 
@@ -26,8 +26,6 @@ class SudokuSolver():
 			if len(self.m[r][i]) == 1:
 				if self.m[r][i][0] in self.m[r][c]:
 					self.m[r][c].remove(self.m[r][i][0])
-					if self.check_and_add_steps(r, c):
-						return
 
 		# remove repetitions in column
 		for i in range(9):
@@ -36,8 +34,6 @@ class SudokuSolver():
 			if len(self.m[i][c]) == 1:
 				if self.m[i][c][0] in self.m[r][c]:
 					self.m[r][c].remove(self.m[i][c][0])
-					if self.check_and_add_steps(r, c):
-						return
 
 		# remove repetitions in box
 		box_r = r // 3
@@ -51,8 +47,7 @@ class SudokuSolver():
 				if len(self.m[br][bc]) == 1:
 					if self.m[br][bc][0] in self.m[r][c]:
 						self.m[r][c].remove(self.m[br][bc][0])
-						if self.check_and_add_steps(r, c):
-							return
+		self.check_and_add_steps(r, c, "By elimination")
 
 	def run_elimination(self, verbose: bool = False):
 		for r in range(9):
@@ -76,7 +71,7 @@ class SudokuSolver():
 
 			if found == False:
 				self.m[r][c] = [e]
-				self.check_and_add_steps(r, c)
+				self.check_and_add_steps(r, c, "Only element missing in row")
 				return
 
 		# apply confirmations in columns
@@ -90,7 +85,7 @@ class SudokuSolver():
 
 			if found == False:
 				self.m[r][c] = [e]
-				self.check_and_add_steps(r, c)
+				self.check_and_add_steps(r, c, "Only element missing in column")
 				return
 
 		# apply confirmations in box
@@ -109,7 +104,7 @@ class SudokuSolver():
 
 			if found == False:
 				self.m[r][c] = [e]
-				self.check_and_add_steps(r, c)
+				self.check_and_add_steps(r, c, "Only element missing in box")
 				return
 
 	def run_confirmations_by_elimination(self, verbose: bool = False):

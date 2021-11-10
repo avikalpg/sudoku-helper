@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 def pretty_print_board(board: List[List[str]]):
 	row_count = 0
@@ -36,3 +36,7 @@ def convert_matrix_to_board(matrix: List[List[List[int]]]) -> List[List[str]]:
 
 def pretty_print_matrix(matrix: List[List[List[int]]]):
 	pretty_print_board(convert_matrix_to_board(matrix))
+
+def print_steps(steps: List[Tuple[Tuple[int, int], int, str]]):
+	for step in steps:
+		print(str(step[0]) + "\t" + str(step[1]) + "\treason: " + step[2])
