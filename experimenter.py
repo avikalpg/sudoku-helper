@@ -1,7 +1,7 @@
 from SolveState import SolveState
 from typing import List, Tuple
 import utils
-import sudoku_solver
+from sudoku_solver import SudokuSolver
 from copy import deepcopy
 
 def solve_sudoku(board: List[List[str]]) -> List[List[str]]:
@@ -16,7 +16,8 @@ def solve_sudoku(board: List[List[str]]) -> List[List[str]]:
 		raise Exception("[solve_sudoku] Something went wrong")
 
 def orchestrate_solution(matrix: List[List[List[int]]]) -> Tuple[List[List[List[int]]], SolveState]:
-	solved_matrix, solution_state = sudoku_solver.solve(matrix)
+	board_solver = SudokuSolver(matrix)
+	solved_matrix, solution_state = board_solver.solve()
 	print(solution_state)
 
 	if solution_state != SolveState.UNSOLVED:
