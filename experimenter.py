@@ -22,6 +22,8 @@ def orchestrate_solution(matrix: List[List[List[int]]]) -> Tuple[List[List[List[
 	print(solution_state)
 
 	if solution_state != SolveState.UNSOLVED:
+		print("Number of steps: ", len(board_solver.seq_steps))
+		print(board_solver.seq_steps)
 		return solved_matrix, solution_state
 	else:
 		n, r, c = find_minimum_options(solved_matrix)
