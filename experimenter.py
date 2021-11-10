@@ -17,7 +17,8 @@ def solve_sudoku(board: List[List[str]]) -> List[List[str]]:
 
 def orchestrate_solution(matrix: List[List[List[int]]]) -> Tuple[List[List[List[int]]], SolveState]:
 	board_solver = SudokuSolver(matrix)
-	solved_matrix, solution_state = board_solver.solve()
+	solved_matrix = board_solver.solve()
+	solution_state = board_solver.state
 	print(solution_state)
 
 	if solution_state != SolveState.UNSOLVED:

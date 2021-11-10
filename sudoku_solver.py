@@ -6,6 +6,7 @@ from copy import deepcopy
 class SudokuSolver():
 	def __init__(self, matrix: List[List[List[int]]]) -> None:
 		self.m = matrix
+		self.state = SolveState.UNSOLVED
 
 	def eliminate_options(self, r: int, c: int):
 		if len(self.m[r][c]) == 1:
@@ -102,7 +103,7 @@ class SudokuSolver():
 		if verbose:
 			utils.pretty_print_matrix(self.m)
 
-	def get_matrix_stats(self) -> Tuple[int, SolveState]:
+	def get_matrix_stats(self) -> int:
 		cells_fixed = 0
 		solve_state = SolveState.UNSOLVED
 		for row in self.m:
@@ -115,19 +116,20 @@ class SudokuSolver():
 		print(str(cells_fixed) + " / " + str(81))
 		if cells_fixed == 81:
 			solve_state = SolveState.SOLVED
-		return cells_fixed, solve_state
+		self.state = solve_state
+		return cells_fixed
 
-	def solve(self) -> Tuple[List[List[List[int]]], SolveState]:
-		solution_progress, solution_state = self.get_matrix_stats()
+	def solve(self) -> List[List[List[int]]]:
+		solution_progress = self.get_matrix_stats()
 
 		repeat_count = 0
-		while solution_progress < 81 and solution_state == SolveState.UNSOLVED:
+		while solution_progress < 81 and self.state == SolveState.UNSOLVED:
 			print ("========================")
 			prev_mat = deepcopy(self.m)
 			self.run_elimination(verbose=False)
-			solution_progress, solution_state = self.get_matrix_stats()
+			solution_progress = self.get_matrix_stats()
 			self.run_confirmations_by_elimination(verbose=False)
-			solution_progress, solution_state = self.get_matrix_stats()
+			solution_progress = self.get_matrix_stats()
 
 			if self.m == prev_mat:
 				repeat_count += 1
@@ -137,4 +139,4 @@ class SudokuSolver():
 			else:
 				repeat_count = 0
 
-		return self.m, solution_state
+		return self.m
