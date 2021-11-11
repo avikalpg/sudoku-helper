@@ -4,14 +4,17 @@
 	"version": "1.0",
 	"manifest_version": 3,
 	"background": {
-		"service_worker": "background.js"
+		"service_worker": "background.js",
+		"type": "module"
 	},
 	"permissions": [
 		"storage",
 		"activeTab",
-		"scripting"
+		"scripting",
+		"tabs"
 	],
 	"action": {
+		"default_title": "Sudoku Solver",
 		"default_popup": "popup.html",
 		"default_icon": {
 			"16": "/images/get_started16.png",

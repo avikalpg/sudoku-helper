@@ -1,8 +1,14 @@
-// Initialize button with user's preferred color
-let changeColor = document.getElementById("changeColor");
+import { getCurrentHostname } from './src/board_parser.js'
 
-chrome.storage.sync.get("color", ({ color }) => {
-	changeColor.style.backgroundColor = color;
+let swSpan = document.getElementById("supported_websites_span");
+
+document.addEventListener("DOMContentLoaded", function () {
+	chrome.storage.sync.get("supported_websites", ({ supported_websites }) => {
+		getCurrentHostname().then((hostname) => {
+			swSpan.innerHTML = "Supports " + supported_websites +
+				"<br/>Current: " + hostname;
+		});
+	});
 });
 
 // When the button is clicked, inject setPageBackgroundColor into current page
@@ -22,8 +28,4 @@ function setPageBackgroundColor() {
 	chrome.storage.sync.get("color", ({ color }) => {
 		document.body.style.backgroundColor = color;
 	});
-}
-
-window.onload = function () {
-	console.log(document.body.innerHTML)
 }
