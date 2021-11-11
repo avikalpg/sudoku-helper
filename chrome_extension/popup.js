@@ -1,6 +1,7 @@
-import { getCurrentHostname } from './src/board_parser.js'
+import { getCurrentHostname, getBoard } from './src/board_parser.js'
 
 let swSpan = document.getElementById("supported_websites_span");
+let output = document.getElementById("output");
 
 document.addEventListener("DOMContentLoaded", function () {
 	chrome.storage.sync.get("supported_websites", ({ supported_websites }) => {
@@ -9,6 +10,22 @@ document.addEventListener("DOMContentLoaded", function () {
 				"<br/>Current: " + hostname;
 		});
 	});
+
+	chrome.tabs.query({ active: true, currentWindow: true },
+		(tabs) => {
+			chrome.scripting.executeScript({
+				target: { tabId: tabs[0].id },
+				func: getBoard
+			},
+				(response) => {
+					const foundGrid = response[0].result;
+					if (!foundGrid) {
+						output.innerHTML = "Please navigate to the sudoku puzzle screen";
+					} else {
+						output.innerHTML = "Found Grid";
+					}
+				});
+		});
 });
 
 // When the button is clicked, inject setPageBackgroundColor into current page
