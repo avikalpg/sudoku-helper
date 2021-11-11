@@ -15,15 +15,17 @@ def main():
 	# board = get_sudoku_board(game_url)
 
 	# html_file_name = 'easy_html_0.txt'
-	html_file_name = 'expert_html_0.txt'
+	# html_file_name = 'expert_html_0.txt'
+	html_file_name = 'multi_answer_html.txt'
 
 	with open(html_file_name, 'r') as f:
 		demo_html = f.read()
 	board = board_parser.get_board(demo_html)
 	utils.pretty_print_board(board)
 
-	solved_board = experimenter.solve_sudoku(board)
-	utils.pretty_print_board(solved_board)
+	solved_boards = experimenter.solve_sudoku(board)
+	for solved_board in solved_boards:
+		utils.pretty_print_board(solved_board)
 
 if __name__ == '__main__':
 	main()
