@@ -1,4 +1,5 @@
 import { getCurrentHostname, getBoard } from './src/board_parser.js'
+import { solveSudoku } from './src/experimenter.js';
 
 let swSpan = document.getElementById("supported_websites_span");
 let output = document.getElementById("output");
@@ -34,6 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
 						}
 						outputHtml += "</table>";
 						output.innerHTML = outputHtml;
+
+						solveSudoku(foundGrid);
 					}
 				});
 		});
