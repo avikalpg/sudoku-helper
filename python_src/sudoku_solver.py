@@ -1,5 +1,5 @@
 from SolveState import SolveState
-from typing import List, Tuple
+from typing import List
 import utils
 from copy import deepcopy
 
