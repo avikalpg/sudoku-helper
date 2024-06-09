@@ -1,14 +1,14 @@
-import { getCurrentHostname, getBoard } from './src/board_parser.js'
+import { getCurrentHostname, getBoard } from './src/board_parser.js';
 import { solveSudoku } from './src/experimenter.js';
 
-let swSpan = document.getElementById("supported_websites_span");
-let output = document.getElementById("output");
+const swSpan = document.getElementById('supported_websites_span');
+const output = document.getElementById('output');
 
-document.addEventListener("DOMContentLoaded", function () {
-	chrome.storage.sync.get("supported_websites", ({ supported_websites }) => {
+document.addEventListener('DOMContentLoaded', () => {
+	chrome.storage.sync.get('supported_websites', ({ supported_websites }) => {
 		getCurrentHostname().then((hostname) => {
-			swSpan.innerHTML = "Supports " + supported_websites +
-				"<br/>Current: " + hostname;
+			swSpan.innerHTML = `Supports ${supported_websites}
+        <br/>Current: ${hostname}<br/>`;
 		});
 	});
 
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				(response) => {
 					const foundGrid = response[0].result;
 					if (!foundGrid) {
-						output.innerHTML = "Please navigate to the sudoku puzzle screen";
+						output.innerHTML = 'Please navigate to the sudoku puzzle screen';
 					} else {
 						const solvedBoardsWithSteps = solveSudoku(foundGrid);
 
@@ -101,22 +101,3 @@ document.addEventListener("DOMContentLoaded", function () {
 				});
 		});
 });
-
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-	let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-	chrome.scripting.executeScript({
-		target: { tabId: tab.id },
-		function: setPageBackgroundColor,
-	});
-});
-
-// The body of this function will be executed as a content script inside the
-// current page
-function setPageBackgroundColor() {
-	console.log(document.body.innerHTML)
-	chrome.storage.sync.get("color", ({ color }) => {
-		document.body.style.backgroundColor = color;
-	});
-}
