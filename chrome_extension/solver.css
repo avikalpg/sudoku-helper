@@ -2,10 +2,16 @@ body {
   width: 300px;
 }
 
-#sudoku_board {
+#sudoku_board,
+#sudoku_solved_board {
   border-collapse: collapse;
   border: 2px solid black;
   background-color: azure;
+}
+
+#sudoku_solved_board {
+  background-color: lightgreen;
+  font-size: x-small;
 }
 
 #sudoku_row:nth-child(3n) {
@@ -26,9 +32,15 @@ body {
   border-right: 1px solid gray;
 }
 
-#sudoku_cell {
+#sudoku_board #sudoku_cell {
   width: 30px;
   height: 30px;
+  text-align: center;
+}
+
+#sudoku_solved_board #sudoku_cell {
+  width: 15px;
+  height: 15px;
   text-align: center;
 }
 

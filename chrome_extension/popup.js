@@ -36,7 +36,21 @@ document.addEventListener("DOMContentLoaded", function () {
 						outputHtml += "</table>";
 						output.innerHTML = outputHtml;
 
-						solveSudoku(foundGrid);
+						const solvedBoards = solveSudoku(foundGrid);
+						solvedBoards.forEach((solvedBoard, i) => {
+							// Display each solved board
+							let solvedBoardHtml = `<br><br>Solved Board #${i + 1}:<br/><table id='sudoku_solved_board'>`;
+							for (let row of solvedBoard) {
+								let rowHtml = "";
+								for (let cell of row) {
+									rowHtml += `<td id='sudoku_cell'>${cell}</td>`;
+								}
+								solvedBoardHtml += "<tr id='sudoku_row'>" + rowHtml + "</tr>";
+							}
+							solvedBoardHtml += `</table>`;
+							outputHtml += solvedBoardHtml;
+						});
+						output.innerHTML = outputHtml;
 					}
 				});
 		});
