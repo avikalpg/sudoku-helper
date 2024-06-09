@@ -1,0 +1,77 @@
+body {
+  width: 300px;
+}
+
+#sudoku_board,
+.sudoku_solved_board {
+  border-collapse: collapse;
+  border: 2px solid black;
+  background-color: azure;
+  font-size: large;
+}
+
+.sudoku_solved_board {
+  background-color: lightgreen;
+  font-size: x-small;
+}
+
+.sudoku_row:nth-child(3n) {
+  border-bottom: 2px solid black;
+}
+
+.sudoku_row:nth-child(3n+1),
+.sudoku_row:nth-child(3n+2) {
+  border-bottom: 1px solid gray;
+}
+
+.sudoku_cell:nth-child(3n) {
+  border-right: 2px solid black;
+}
+
+.sudoku_cell:nth-child(3n+1),
+.sudoku_cell:nth-child(3n+2) {
+  border-right: 1px solid gray;
+}
+
+#sudoku_board .sudoku_cell {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.sudoku_solved_board .sudoku_cell {
+  width: 15px;
+  height: 15px;
+  text-align: center;
+}
+
+.hint {
+  background-color: rgba(255, 255, 0, 0.5);
+  outline: solid 2px orange;
+  color: rgba(128, 128, 128, 0.5);
+}
+
+.hint_reason {
+  font-size: smaller;
+  color: #aa2200;
+}
+
+#solved_boards_container {
+  display: flex;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+button {
+  height: 30px;
+  width: 30px;
+  outline: none;
+  margin: 10px;
+  border: none;
+  border-radius: 2px;
+}
+
+button.current {
+  box-shadow: 0 0 0 2px white,
+    0 0 0 4px black;
+}
