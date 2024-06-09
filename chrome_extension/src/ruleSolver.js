@@ -31,6 +31,13 @@ export class RuleSolver {
 		this.state = solve_state
 		return cells_fixed
 	}
+	/**
+	 *
+	 * @param {number} r
+	 * @param {number} c
+	 * @param {string} reason
+	 * @returns
+	 */
 	checkAndAddSteps(r, c, reason) {
 		if (this.m[r][c].length == 1) {
 			this.seqSteps.push([[r + 1, c + 1], this.m[r][c][0], reason]);

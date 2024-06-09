@@ -3,13 +3,13 @@ body {
 }
 
 #sudoku_board,
-#sudoku_solved_board {
+.sudoku_solved_board {
   border-collapse: collapse;
   border: 2px solid black;
   background-color: azure;
 }
 
-#sudoku_solved_board {
+.sudoku_solved_board {
   background-color: lightgreen;
   font-size: x-small;
 }
@@ -38,10 +38,16 @@ body {
   text-align: center;
 }
 
-#sudoku_solved_board #sudoku_cell {
+.sudoku_solved_board #sudoku_cell {
   width: 15px;
   height: 15px;
   text-align: center;
+}
+
+#solved_boards_container {
+  display: flex;
+  gap: 2px;
+  margin-top: 8px;
 }
 
 button {

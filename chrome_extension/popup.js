@@ -23,34 +23,59 @@ document.addEventListener("DOMContentLoaded", function () {
 					if (!foundGrid) {
 						output.innerHTML = "Please navigate to the sudoku puzzle screen";
 					} else {
-						output.innerHTML = "Found Grid";
-						// Parse grid and display
-						let outputHtml = "<table id='sudoku_board'>";
-						for (let row of foundGrid) {
-							let rowHtml = "";
-							for (let cell of row) {
-								rowHtml += `<td id='sudoku_cell'>${cell}</td>`;
-							}
-							outputHtml += "<tr id='sudoku_row'>" + rowHtml + "</tr>";
-						}
-						outputHtml += "</table>";
-						output.innerHTML = outputHtml;
+						const solvedBoardsWithSteps = solveSudoku(foundGrid);
 
-						const solvedBoards = solveSudoku(foundGrid);
-						solvedBoards.forEach((solvedBoard, i) => {
-							// Display each solved board
-							let solvedBoardHtml = `<br><br>Solved Board #${i + 1}:<br/><table id='sudoku_solved_board'>`;
-							for (let row of solvedBoard) {
-								let rowHtml = "";
-								for (let cell of row) {
-									rowHtml += `<td id='sudoku_cell'>${cell}</td>`;
-								}
-								solvedBoardHtml += "<tr id='sudoku_row'>" + rowHtml + "</tr>";
+						const boardTable = document.createElement('table');
+						boardTable.id = 'sudoku_board';
+
+						for (let row of foundGrid) {
+							const rowElement = document.createElement('tr');
+							rowElement.id = 'sudoku_row';
+
+							for (let cell of row) {
+								const cellElement = document.createElement('td');
+								cellElement.id = 'sudoku_cell';
+								cellElement.textContent = cell;
+								rowElement.appendChild(cellElement);
 							}
-							solvedBoardHtml += `</table>`;
-							outputHtml += solvedBoardHtml;
+
+							boardTable.appendChild(rowElement);
+						}
+
+						output.appendChild(boardTable);
+
+						const solvedBoardsContainer = document.createElement('div');
+						solvedBoardsContainer.id = 'solved_boards_container';
+
+						solvedBoardsWithSteps.forEach(({ solvedBoard }, i) => {
+							const solvedBoardItem = document.createElement('div');
+							solvedBoardItem.className = 'solved_board_item';
+
+							const titleElement = document.createElement('h4');
+							titleElement.textContent = `Solution #${i + 1}`;
+
+							const solvedBoardTable = document.createElement('table');
+							solvedBoardTable.id = `solved_board_${i + 1}`;
+							solvedBoardTable.className = 'sudoku_solved_board';
+
+							for (let row of solvedBoard) {
+								const rowElement = document.createElement('tr');
+								rowElement.id = 'sudoku_row';
+
+								for (let cell of row) {
+									const cellElement = document.createElement('td');
+									cellElement.id = 'sudoku_cell';
+									cellElement.textContent = cell;
+									rowElement.appendChild(cellElement);
+								}
+								solvedBoardTable.appendChild(rowElement);
+							}
+
+							solvedBoardItem.appendChild(titleElement);
+							solvedBoardItem.appendChild(solvedBoardTable);
+							solvedBoardsContainer.appendChild(solvedBoardItem);
 						});
-						output.innerHTML = outputHtml;
+						output.appendChild(solvedBoardsContainer);
 					}
 				});
 		});

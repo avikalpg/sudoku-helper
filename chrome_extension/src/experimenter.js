@@ -5,7 +5,7 @@ import { populateOptions, printSteps, convertMatrixToBoard } from './utils.js';
 /**
  *
  * @param {number[][]} board Current board
- * @returns {number[][][]} A list of solved boards
+ * @returns {{solvedBoard: number[][], steps: }[]} A list of solved boards
  */
 export function solveSudoku(board) {
 	const matrix = populateOptions(board);
@@ -17,17 +17,20 @@ export function solveSudoku(board) {
 	}
 	console.dir(possibleSolutions);
 
-	const solvedBoards = [];
+	const solvedBoardsWithSteps = [];
 	for (const [solvedMatrix, solutionState, seqSteps] of possibleSolutions) {
 		if (solutionState === SolveState.SOLVED) {
 			console.log('Number of steps: ', seqSteps.length);
 			printSteps(seqSteps);
 			console.log('-.'.repeat(15));
-			solvedBoards.push(convertMatrixToBoard(solvedMatrix));
+			solvedBoardsWithSteps.push({
+				solvedBoard: convertMatrixToBoard(solvedMatrix),
+				steps: seqSteps
+			});
 		}
 	}
 
-	return solvedBoards;
+	return solvedBoardsWithSteps;
 }
 
 /**
