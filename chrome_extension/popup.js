@@ -23,6 +23,17 @@ document.addEventListener("DOMContentLoaded", function () {
 						output.innerHTML = "Please navigate to the sudoku puzzle screen";
 					} else {
 						output.innerHTML = "Found Grid";
+						// Parse grid and display
+						let outputHtml = "<table id='sudoku_board'>";
+						for (let row of foundGrid) {
+							let rowHtml = "";
+							for (let cell of row) {
+								rowHtml += `<td id='sudoku_cell'>${cell}</td>`;
+							}
+							outputHtml += "<tr id='sudoku_row'>" + rowHtml + "</tr>";
+						}
+						outputHtml += "</table>";
+						output.innerHTML = outputHtml;
 					}
 				});
 		});
