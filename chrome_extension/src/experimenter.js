@@ -13,7 +13,7 @@ export function solveSudoku(board) {
 	console.log(`Number of possible solutions: ${possibleSolutions.length}`);
 	if (possibleSolutions.length === 0) {
 		console.log('Board cannot be solved');
-		return null;
+		return [];
 	}
 	console.dir(possibleSolutions);
 
