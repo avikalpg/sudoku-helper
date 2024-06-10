@@ -13,6 +13,21 @@ function updateSupportedWebsitesText() {
 	});
 }
 
+function renderNoPuzzle() {
+	const noPuzzleMessage = document.createElement('p');
+	noPuzzleMessage.textContent = 'Please navigate to the sudoku puzzle screen';
+
+	return noPuzzleMessage;
+}
+
+function renderIsUnsolvable() {
+	const unsolvableMessage = document.createElement('p');
+	unsolvableMessage.textContent = 'This puzzle is unsolvable';
+	unsolvableMessage.classList.add('unsolvable');
+
+	return unsolvableMessage;
+}
+
 function renderBoard(foundGrid, hint) {
 	const boardTable = document.createElement('table');
 	boardTable.id = 'sudoku_board';
@@ -98,11 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
 				(response) => {
 					const foundGrid = response[0].result;
 					if (!foundGrid) {
-						output.innerHTML = 'Please navigate to the sudoku puzzle screen';
+						output.appendChild(renderNoPuzzle());
 						return;
 					}
 
 					const solvedBoardsWithSteps = solveSudoku(foundGrid);
+					if (solvedBoardsWithSteps.length === 0) {
+						output.appendChild(renderIsUnsolvable());
+						return;
+					}
+
 					const hint = getHint(solvedBoardsWithSteps);
 
 					const boardTable = renderBoard(foundGrid, hint);
