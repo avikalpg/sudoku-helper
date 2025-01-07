@@ -1,7 +1,7 @@
 {
 	"name": "Sudoku Solver",
 	"description": "Detect sudoku puzzle from screen and suggest next steps to solve the sudoku puzzle.",
-	"version": "1.0",
+	"version": "1.1",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "background.js",
@@ -10,8 +10,10 @@
 	"permissions": [
 		"storage",
 		"activeTab",
-		"scripting",
-		"tabs"
+		"scripting"
+	],
+	"host_permissions": [
+		"<all_urls>"
 	],
 	"action": {
 		"default_title": "Sudoku Solver",
@@ -21,7 +23,8 @@
 			"32": "/images/SudokuHelper32.png",
 			"48": "/images/SudokuHelper48.png",
 			"128": "/images/SudokuHelper128.png"
-		}
+		},
+		"default_state": "disabled"
 	},
 	"icons": {
 		"16": "/images/SudokuHelper16.png",
